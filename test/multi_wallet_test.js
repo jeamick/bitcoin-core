@@ -208,4 +208,26 @@ describe('Multi Wallet', () => {
       validateAddressError.code.should.equal(-1);
     });
   });
+  
+  describe('signRawTransactionWithWallet()', () => {
+       const getFundedTransaction = async () => {
+         const address = await client.getNewAddress('test', 'legacy');
+         const rawTransaction = await client.createRawTransaction([], [{ [address]: 1 }]);
+         return client.fundRawTransaction(rawTransaction);
+       }
+
+        it('should sign a funded raw transaction and return the hex', async () => {
+         const fundedTransaction = await getFundedTransaction();
+         const signedTransaction = await client.signRawTransactionWithWallet(fundedTransaction.hex);
+         signedTransaction.should.have.keys('hex');
+         signedTransaction.hex.should.be.a.String();
+       });
+
+        it('should support named parameters', async () => {
+         const fundedTransaction = await getFundedTransaction();
+         const signedTransaction = await client.signRawTransactionWithWallet({ hexstring: fundedTransaction.hex });
+         signedTransaction.should.have.keys('hex');
+         signedTransaction.hex.should.be.a.String();
+       });
+     });
 });
