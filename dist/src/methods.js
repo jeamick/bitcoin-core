@@ -604,6 +604,16 @@ var _default = {
     },
     version: '>=0.7.0'
   },
+  signRawTransactionWithKey: {
+    category: 'rawtransactions',
+    obfuscate: {
+      request: {
+        default: params => (0, _lodash.set)([...params], '[1]', (0, _lodash.map)(params[1], () => '******')),
+        named: params => (0, _lodash.set)(params, 'privkeys', (0, _lodash.map)(params.privkeys || [], () => '******'))
+      }
+    },
+    version: '>=0.17.0'
+  },
   stop: {
     category: 'control',
     version: '>=0.1.0'
